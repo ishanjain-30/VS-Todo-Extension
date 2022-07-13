@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import type { User } from "../types";
+  import HelloWorld from "./HelloWorld.svelte";
   export let user: User;
   export let accessToken: string;
   let text = "";
@@ -18,8 +19,9 @@
     });
     const { todo } = await response.json();
     todos = [todo, ...todos];
-    console.log({ todo });
+    // console.log({ todo });
   }
+
   onMount(async () => {
     window.addEventListener("message", async (event) => {
       const message = event.data;
@@ -49,7 +51,6 @@
 >
   <input bind:value={text} />
 </form>
-
 <ul>
   {#each todos as todo (todo.id)}
     <li
@@ -60,6 +61,7 @@
           method: "PUT",
           body: JSON.stringify({
             id: todo.id,
+            name: todo.text,
           }),
           headers: {
             "content-type": "application/json",

@@ -11,6 +11,7 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import { Todo } from "./entities/Todo";
 import { isAuth } from "./isAuth";
+import { toEditorSettings } from "typescript";
 
 const main = async () => {
   await createConnection({
@@ -77,7 +78,7 @@ const main = async () => {
     const todos = await Todo.find({
       where: { creatorId: req.userId },
       order: { id: "DESC" },
-      // select: { completed: true },
+      select: { completed: false },
     });
 
     res.send({ todos });
@@ -88,11 +89,13 @@ const main = async () => {
       text: req.body.text,
       creatorId: req.userId,
     }).save();
+
     res.send({ todo });
   });
 
   app.put("/todo", isAuth, async (req, res) => {
-    const todo = await Todo.findOne(req.body.id);
+    const x = req.body.id;
+    const todo = await Todo.findOneBy(x);
     if (!todo) {
       res.send({ todo: null });
       return;
@@ -100,9 +103,8 @@ const main = async () => {
     if (todo.creatorId !== req.userId) {
       throw new Error("not authorized");
     }
-    todo.completed = !todo.completed;
-    Todo.delete(todo.id);
     await todo.save();
+    Todo.delete(x);
     res.send({ todo });
   });
 

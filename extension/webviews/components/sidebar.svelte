@@ -37,14 +37,14 @@
     <button
       on:click={() => {
         page = "contact";
-      }}>go to contact</button
+      }}>Contact Me</button
     >
   {:else}
-    <div>Contact me here: adlkfjjqioefeqio</div>
+    <div>Contact me here: ijain3005@gmail.com</div>
     <button
       on:click={() => {
         page = "todos";
-      }}>go back</button
+      }}>Back</button
     >
   {/if}
   <button
@@ -52,12 +52,12 @@
       accessToken = "";
       user = null;
       tsvscode.postMessage({ type: "logout", value: undefined });
-    }}>logout</button
+    }}>Logout</button
   >
 {:else}
   <button
     on:click={() => {
       tsvscode.postMessage({ type: "authenticate", value: undefined });
-    }}>login with GitHub</button
+    }}>Login with GitHub</button
   >
 {/if}
